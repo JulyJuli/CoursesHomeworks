@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:loadBundle basename="resources.application" var="msg" />
+
+<h:head>
+	<title>Homework</title>
+	<link href="#{request.contextPath}/resources/css/bootstrap.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/resources/css/bootstrap.min.css"
+		rel="stylesheet" />
+
+	<style type="text/css">
+.col-xs-updated {
+	width: 92% !important;
+}
+</style>
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="row">
+			<div class="navbar navbar-inverse">
+				<div class="navbar-brand">
+					<h:outputText value="Please, select one from tasks below:" />
+				</div>
+			</div>
+
+
+			<div class="col-xs-12 col-xs-updated">
+
+
+
+				<h:form styleClass="form-horizontal">
+					<fieldset>
+						<div class="form-group">
+							<h2>
+								<h:outputLabel value="Task1 : Strings" />
+							</h2>
+							<br></br> <i><label for="task1string">Source String:</label></i>
+							<h:inputText value="#{temp.task1array}" styleClass="form-control"
+								id="task1string" />
+						</div>
+						<div class="form-group">
+							<i><label for="task1substr">String for delete:</label></i>
+							<h:inputText value="#{temp.task1substr}"
+								styleClass="form-control" id="task1substr" />
+
+							<h:commandButton value="First Task"
+								action="#{temp.processingString}" styleClass="btn btn-default">
+								<f:ajax execute="@form" render="result1" />
+							</h:commandButton>
+						</div>
+
+						<h3>
+							<h:outputText style="color:blue" value="#{temp.result}"
+								id="result1" />
+						</h3>
+
+					</fieldset>
+				</h:form>
+
+				<h:form styleClass="form-horizontal">
+					<fieldset>
+
+						<div class="form-group">
+							<h2>
+								<h:outputLabel value="Task2 : Arrays" />
+							</h2>
+							<br></br> <i><label for="task2array">Array:</label></i>
+
+							<p:inputText value="#{temp.task2array}" styleClass="form-control"
+								id="task2array" title="Please, input array in format: [a b c d]" />
+							<p:tooltip for="task2array" showEvent="focus" hideEvent="blur" />
+						</div>
+						<div class="form-group">
+							<i><label for="task2num">Number:</label></i>
+							<h:inputText value="#{temp.task2num}" styleClass="form-control"
+								id="task2num" />
+						</div>
+						<div class="form-group">
+							<i><label for="task2arrearance">Appearance:</label></i>
+							<h:inputText value="#{temp.task2app}" styleClass="form-control"
+								id="task2arrearance" />
+
+							<h:commandButton value="Second Task"
+								action="#{temp.processingArray}" styleClass="btn btn-default">
+								<f:ajax execute="@form" render="result3" />
+							</h:commandButton>
+							<br />
+						</div>
+						<h3>
+							<h:outputText style="color:blue" value="#{temp.result}"
+								id="result3" />
+						</h3>
+
+					</fieldset>
+				</h:form>
+
+
+				<h:form styleClass="form-horizontal">
+					<div class="form-group">
+						<h2>
+							<h:outputLabel value="Task3 : Recurtion" />
+						</h2>
+
+						<h:inputText value="#{temp.task3}" styleClass="form-control"
+							id="t3" />
+
+						<h:commandButton value="Third Task" action="#{temp.makeRecurtion}"
+							styleClass="btn btn-default">
+							<f:ajax execute="t3" render="result3" />
+						</h:commandButton>
+						<br />
+						<h3>
+							<h:outputText style="color:blue" value="#{temp.result}"
+								id="result3" />
+						</h3>
+					</div>
+				</h:form>
+				<h:form styleClass="form-horizontal">
+					<div class="form-group">
+
+						<h2>
+							<h:outputLabel value="Task4 : Convertion string array to Map" />
+						</h2>
+
+
+
+						<p:inputText value="#{temp.task4}" styleClass="form-control"
+							id="t4" title="Please, input array in format: [a b c d]" />
+						<p:tooltip for="t4" showEvent="focus" hideEvent="blur" />
+
+						<h:commandButton value="Fourth Task"
+							action="#{temp.convertArrayToMap}" styleClass="btn btn-default">
+							<f:ajax execute="t4" render="result4" />
+						</h:commandButton>
+						<br />
+						<h3>
+							<h:outputText style="color:blue" value="#{temp.result}"
+								id="result4" />
+						</h3>
+
+					</div>
+				</h:form>
+				<h:form styleClass="form-horizontal">
+					<div class="form-group">
+
+						<h2>
+							<h:outputLabel value="Task5 : Encoding" />
+						</h2>
+
+						<h:inputText value="#{temp.task5}" styleClass="form-control"
+							id="t5" />
+
+						<h:commandButton value="Fifth Task" action="#{temp.makeEncoding}"
+							styleClass="btn btn-default">
+							<f:ajax execute="t5" render="result5" />
+						</h:commandButton>
+						<br />
+
+						<h3>
+							<h:outputText style="color:blue" value="#{temp.result}"
+								id="result5" />
+						</h3>
+
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
+</h:body>
+</html>

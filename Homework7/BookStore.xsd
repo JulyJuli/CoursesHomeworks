@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://nure.ua/nechyporuk" xmlns:tns="http://nure.ua/nechyporuk">
+	<xsd:element name="BookStore">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Book" type="tns:Book" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="Book">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" />
+			<xsd:element name="Categories" type="tns:Categories" />
+			<xsd:element name="Country" type="tns:Country" />
+			<xsd:element name="Year" type="xsd:integer" />
+			<xsd:element name="Authors" type="tns:Authors" />
+			<xsd:element name="ISBN" type="xsd:integer" />
+		</xsd:sequence>
+		<xsd:attribute name="id">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:unsignedInt">
+					<xsd:minInclusive value="1" />
+					<xsd:maxExclusive value="100000" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	
+	</xsd:complexType>
+	
+	
+
+	
+	<xsd:simpleType name="Year">
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="1000" />
+			<xsd:maxInclusive value="2018" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Country">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="USA" />
+			<xsd:enumeration value="France" />
+			<xsd:enumeration value="Russia" />
+			<xsd:enumeration value="German" />
+			<xsd:enumeration value="Italia" />
+			<xsd:enumeration value="India" />
+			<xsd:enumeration value="England" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	
+	<xsd:complexType name="Authors">
+			<xsd:sequence>
+				<xsd:element name="Author" type="tns:author" maxOccurs="10" />
+			</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="author">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[а-яА-Яa-zA-Z|\s,]*|\s" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+		<xsd:complexType name="Categories">
+			<xsd:sequence>
+				<xsd:element name="Category" type="tns:Category" maxOccurs="10" />
+			</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:simpleType name="Category">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="historical" />
+			<xsd:enumeration value="authobiography" />
+			<xsd:enumeration value="fiction" />
+			<xsd:enumeration value="novel"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema>

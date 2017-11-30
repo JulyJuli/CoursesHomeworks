@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BookStore>
+	<Book id="2">
+		<Name>Hard Days</Name>
+		<Categories>
+			<Category>FICTION</Category>
+			</Categories>
+		<Country>England</Country>
+		<Year>1985</Year>
+		<Authors>
+			<Author>Unknown</Author>
+			</Authors>
+		<ISBN>1234</ISBN>
+	</Book>
+	
+	
+	<Book id="1">
+		<Name>High Hopes</Name>
+		<Categories>
+			<Category>NOVEL</Category>
+			<Category>FICTION</Category>
+			</Categories>
+		<Country>England</Country>
+		<Year>1883</Year>
+		<Authors>
+			<Author>Dickenz</Author>
+			<Author>Trsdw</Author>
+			</Authors>
+		<ISBN>12345</ISBN>
+	</Book>
+</BookStore>
