@@ -1,10 +1,6 @@
 package profitsoft.dao.impl;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,6 +11,8 @@ import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import profitsoft.beans.Book;
@@ -33,41 +31,20 @@ public class BookDaoImpl implements BookDao {
 	static Logger log = Logger.getLogger(BookDaoImpl.class.getName());
 
 	public int insertBook(Book book) {
-		Connection connection = null;
-		PreparedStatement pst = null;
-		Integer generatedId = null;
 
-		try {
-			connection = jdbcTemplate.getDataSource().getConnection();
-			pst = connection.prepareStatement(Queries.INSERT_INTO_BOOK_TABLE, Statement.RETURN_GENERATED_KEYS);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(connection -> {
+			PreparedStatement pst = connection.prepareStatement(Queries.INSERT_INTO_BOOK_TABLE, new String[] { "Id" });
+			
 			int i = 0;
-
 			pst.setString(++i, book.getName());
 			pst.setInt(++i, book.getISBN());
+			return pst;
+		}, keyHolder);
 
-			pst.executeUpdate();
-			ResultSet keys = pst.getGeneratedKeys();
-
-			if (keys.next()) {
-				generatedId = keys.getInt(1);
-			}
-			keys.close();
-		} catch (SQLException e) {
-			 log.info(e.toString());
-		}
-
-		finally {
-			if (pst != null || connection != null) {
-				try {
-					pst.close();
-					connection.close();
-				} catch (SQLException e) {
-					 log.info(e.toString());
-				}
-			}
-		}
-
-		return generatedId;
+		Number key = keyHolder.getKey();
+		return key.intValue();
 	}
 
 	public boolean updateBook(Book book) {
@@ -82,22 +59,22 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	public Book selectBookById(int id) {
-		
+
 		Book book = null;
 		try {
 			book = (Book) jdbcTemplate.queryForObject(Queries.SELECT_BOOK_BY_ID, new Object[] { id },
 					new BeanPropertyRowMapper<Book>(Book.class));
 		} catch (InvalidResultSetAccessException e) {
-			 log.info("Data not found");
+			log.info("Data not found");
 		} catch (DataAccessException e) {
 			log.info("Data unavailable");
 		}
-	
+
 		return book;
 	}
 
 	public List<Book> selectAllBooks() {
-		List<Book> books= jdbcTemplate.query(Queries.SELECT_ALL_BOOKS, new BeanPropertyRowMapper<Book>(Book.class));
+		List<Book> books = jdbcTemplate.query(Queries.SELECT_ALL_BOOKS, new BeanPropertyRowMapper<Book>(Book.class));
 		return books;
 	}
 
@@ -128,5 +105,5 @@ public class BookDaoImpl implements BookDao {
 
 		return books;
 	}
-	
+
 }

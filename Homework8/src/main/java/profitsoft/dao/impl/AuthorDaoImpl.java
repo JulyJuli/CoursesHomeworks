@@ -1,10 +1,6 @@
 package profitsoft.dao.impl;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -14,6 +10,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import profitsoft.beans.Author;
@@ -29,38 +27,18 @@ public class AuthorDaoImpl implements AuthorDao {
 	static Logger log = Logger.getLogger(BookDaoImpl.class.getName());
 
 	public int insertAuthor(Author author) {
-		Connection connection = null;
-		PreparedStatement pst = null;
-		Integer generatedId = null;
+		
+	      KeyHolder keyHolder = new GeneratedKeyHolder();
 
-		try {
-			connection = jdbcTemplate.getDataSource().getConnection();
-			pst = connection.prepareStatement(Queries.INSERT_INTO_AUTHOR_TABLE, Statement.RETURN_GENERATED_KEYS);
-			pst.setString(1, author.getName());
-			pst.executeUpdate();
-			ResultSet keys = pst.getGeneratedKeys();
+	      jdbcTemplate.update(
+	              connection -> {
+	                  PreparedStatement pst = connection.prepareStatement(Queries.INSERT_INTO_AUTHOR_TABLE, new String[]{"Id"});
+	                  pst.setString(1, author.getName());
+	                  return pst;
+	              }, keyHolder);
 
-			if (keys.next()) {
-				generatedId = keys.getInt(1);
-			}
-			keys.close();
-		}
-
-		catch (SQLException e) {
-			log.info(e.toString());
-		} finally {
-			if (connection != null && pst != null) {
-				try {
-					pst.close();
-					connection.close();
-
-				} catch (SQLException e) {
-					log.info(e.toString());
-				}
-			}
-		}
-
-		return generatedId;
+	      Number key = keyHolder.getKey();    
+	      return key.intValue();
 	}
 
 	public boolean updateAuthor(Author author) {
