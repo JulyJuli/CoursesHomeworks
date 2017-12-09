@@ -1,0 +1,44 @@
+package profitsoft.crud;
+import static org.junit.Assert.*;
+
+import java.sql.SQLException;
+
+import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+
+import profitsoft.beans.Author;
+import profitsoft.configuration.AppConfig;
+import profitsoft.services.AuthorService;
+
+public class AuthorTest {
+
+	AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+	AuthorService aService = (AuthorService) context.getBean("authorService");
+	
+	@Test
+	public void CRUDAuthorTest() throws SQLException {
+
+		// insert author
+		Author a = new Author();
+		a.setName("RAY BRADBUuRY");
+		a.setIdAuthor(aService.insertAuthor(a));
+		assertTrue(a.getIdAuthor() > 0);
+
+		// updating author
+		a.setName("RAY BRADBURY");
+		aService.updateAuthor(a);
+
+		// check for updating
+		Author a2 = aService.selectAuthorById(a.getIdAuthor());
+		assertEquals(a2.getName(), a.getName());
+
+		// delete author
+		assertTrue(aService.deleteAuthorById(a.getIdAuthor()));
+
+		// check for deleting
+		assertNull(aService.selectAuthorById(a.getIdAuthor()));
+
+	}
+
+}
